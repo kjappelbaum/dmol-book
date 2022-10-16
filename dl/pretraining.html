@@ -1,0 +1,713 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="Deep Learning for Molecules &amp; Materials Book" lang="en" name="description" xml:lang="en" />
+<meta content="en_US" property="og:locale" />
+<meta content="summary" name="twitter:card" />
+<meta content="Deep Learning for Molecules &amp; Materials Book" name="twitter:description" />
+<meta content="dmol.pub 📖" name="twitter:title" />
+<meta content="https://dmol.pub/_static/logo.png" name="twitter:image" />
+<meta content="&#64;andrewwhite01" name="twitter:site" />
+
+    <title>Pretraining &#8212; deep learning for molecules &amp; materials</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/a11y.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/custom.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://dmol.pub/dl/pretraining.html" />
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">deep learning for molecules & materials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Overview
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  A. Math Review
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../math/tensors-and-shapes.html">
+   1. Tensors and Shapes
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  B. Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/introduction.html">
+   2. Introduction to Machine Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/regression.html">
+   3. Regression &amp; Model Assessment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/classification.html">
+   4. Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ml/kernel.html">
+   5. Kernel Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  C. Deep Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   6. Deep Learning Overview
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="layers.html">
+   7. Standard Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="gnn.html">
+   8. Graph Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data.html">
+   9. Input Data &amp; Equivariances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Equivariant.html">
+   10. Equivariant Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="xai.html">
+   11. Explaining Predictions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="attention.html">
+   12. Attention Layers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="NLP.html">
+   13. Deep Learning on Sequences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="VAE.html">
+   14. Variational Autoencoder
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="flows.html">
+   15. Normalizing Flows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  D. Applications
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/QM9.html">
+   16. Predicting DFT Energies with GNNs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/MolGenerator.html">
+   17. Generative RNN in Browser
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  E. Contributed Chapters
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Hyperparameter_tuning.html">
+   18. Hyperparameter Tuning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../applied/e3nn_traj.html">
+   19. Equivariant Neural Network for Predicting Trajectories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  F. Appendix
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../style.html">
+   20. Style Guide
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../changelog.html">
+   21. Changelog
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  G. In Progress
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="molnets.html">
+   22. Modern Molecular NNs
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  <script async defer src="https://api.dmol.pub/latest.js"></script><noscript><img src="https://api.dmol.pub/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript> By <a href="https://twitter.com/andrewwhite01">Andrew White</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/dl/pretraining.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/whitead/dmol-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/whitead/dmol-book/issues/new?title=Issue%20on%20page%20%2Fdl/pretraining.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/whitead/dmol-book/blob/master/dl/pretraining.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-does-pretraining-work">
+   How does pretraining work?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-does-pretraining-a-model-work">
+   Why does pretraining a model work?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transfer-learning-vs-fine-tuning">
+   Transfer learning vs fine-tuning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#transfer-learning">
+     Transfer Learning
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fine-tuning">
+     Fine Tuning
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pretraining-for-graph-models">
+   Pretraining for graph models
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-this-notebook">
+   Running This Notebook
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cited-references">
+   Cited References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Pretraining</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-does-pretraining-work">
+   How does pretraining work?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-does-pretraining-a-model-work">
+   Why does pretraining a model work?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transfer-learning-vs-fine-tuning">
+   Transfer learning vs fine-tuning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#transfer-learning">
+     Transfer Learning
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fine-tuning">
+     Fine Tuning
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pretraining-for-graph-models">
+   Pretraining for graph models
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-this-notebook">
+   Running This Notebook
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cited-references">
+   Cited References
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="pretraining">
+<h1>Pretraining<a class="headerlink" href="#pretraining" title="Permalink to this headline">¶</a></h1>
+<section id="how-does-pretraining-work">
+<h2>How does pretraining work?<a class="headerlink" href="#how-does-pretraining-work" title="Permalink to this headline">¶</a></h2>
+<p>Pretraining is a training process in which the weights of a model can be trained on a large dataset, for use as a starting place for training on smaller, similar datasets.</p>
+<p>Supervised deep learning models are generally trained on labeled data to achieve a single task. However, for most practical problems, especially in chemistry, labeled examples are limited, imbalanced, or expensive to obtain, whereas unlabeled data is abundant. When labeled data is scarce, supervised learning techniques lead to poor generalization <span id="id1">[<a class="reference internal" href="#id228" title="Huanru Henry Mao. A survey on self-supervised pre-training for sequential transfer learning in neural networks. arXiv preprint arXiv:2007.00800, 2020.">Mao20</a>]</span>. Instead, in low data regimes, self-supervised learning (SSL) methods (an unsupervised learning approach) are often employed. In SSL, the model is trained on labels that are automatically generated from the data itself. SSL has been largely successful in large language models and computer vision, as well as in chemistry. SSL is the approach used to pre-train models, which can be fine-tuned for downstream tasks, or can be used for transfer learning. The figure below from <span id="id2">[<a class="reference internal" href="#id226" title="Dumitru Erhan, Aaron Courville, Yoshua Bengio, and Pascal Vincent. Why does unsupervised pre-training help deep learning? In Proceedings of the thirteenth international conference on artificial intelligence and statistics, 201–208. JMLR Workshop and Conference Proceedings, 2010.">ECBV10</a>]</span> shows how pretraining can affect test error.</p>
+<figure class="align-default" id="tept">
+<img alt="../_images/test_error_pretraining.png" src="../_images/test_error_pretraining.png" />
+<figcaption>
+<p><span class="caption-text">Test error comparison. Comparing test loss error on MNIST data, with 400 different iterations each. On the left, red and blue correspond to test error for one layer with and without pretraining, respectively. The right image has four layers instead of one.</span><a class="headerlink" href="#tept" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="why-does-pretraining-a-model-work">
+<h2>Why does pretraining a model work?<a class="headerlink" href="#why-does-pretraining-a-model-work" title="Permalink to this headline">¶</a></h2>
+<p>There are many theoretical reasons for why pretraining works. Pretraining can be seen as a sort of regularization technique, because it initializes parameters and restricts learning to a subset of the parameter space <span id="id3">[<a class="reference internal" href="#id228" title="Huanru Henry Mao. A survey on self-supervised pre-training for sequential transfer learning in neural networks. arXiv preprint arXiv:2007.00800, 2020.">Mao20</a>, <a class="reference internal" href="#id226" title="Dumitru Erhan, Aaron Courville, Yoshua Bengio, and Pascal Vincent. Why does unsupervised pre-training help deep learning? In Proceedings of the thirteenth international conference on artificial intelligence and statistics, 201–208. JMLR Workshop and Conference Proceedings, 2010.">ECBV10</a>]</span>. More specifically, the parameters are initialized so that they are restricted to a better local basin of attraction…a region that captures the structure of the input distribution <span id="id4">[<a class="reference internal" href="#id223" title="Yuning You, Tianlong Chen, Yongduo Sui, Ting Chen, Zhangyang Wang, and Yang Shen. Graph contrastive learning with augmentations. Advances in Neural Information Processing Systems, 33:5812–5823, 2020.">YCS+20</a>]</span>. Practically, the parameter space is more constrained as the magnitude of the weights increase during training because the function becomes more nonlinear, and the loss function becomes more topologically complex <span id="id5">[<a class="reference internal" href="#id223" title="Yuning You, Tianlong Chen, Yongduo Sui, Ting Chen, Zhangyang Wang, and Yang Shen. Graph contrastive learning with augmentations. Advances in Neural Information Processing Systems, 33:5812–5823, 2020.">YCS+20</a>]</span>.</p>
+<p>In plainer words, the model collects information about which aspects of the inputs are important, setting the weights accordingly. Then, the model can perform implicit metalearning (helping with hyperparameter choice), and it has been shown that the fine-tuned models’ weights are often not far from the pretrained values <span id="id6">[<a class="reference internal" href="#id228" title="Huanru Henry Mao. A survey on self-supervised pre-training for sequential transfer learning in neural networks. arXiv preprint arXiv:2007.00800, 2020.">Mao20</a>]</span>. Thus, pretraining can help your model drive the parameters toward the values you actually want for your downstream task.</p>
+</section>
+<section id="transfer-learning-vs-fine-tuning">
+<h2>Transfer learning vs fine-tuning<a class="headerlink" href="#transfer-learning-vs-fine-tuning" title="Permalink to this headline">¶</a></h2>
+<section id="transfer-learning">
+<h3>Transfer Learning<a class="headerlink" href="#transfer-learning" title="Permalink to this headline">¶</a></h3>
+<p>Transfer learning works by taking a pretrained model and freezing the layers and parameters that were already trained. Then you can either add layer(s) on top, or you can modify only the last layer and train it to your new task. In transfer learning, the feature extraction layers from the pretraining process are kept frozen. It is necessary that your data has some connection with the original data.</p>
+<p>There are largely two types of transfer learning, and you can find a more formal definition in <span id="id7">[<a class="reference internal" href="#id228" title="Huanru Henry Mao. A survey on self-supervised pre-training for sequential transfer learning in neural networks. arXiv preprint arXiv:2007.00800, 2020.">Mao20</a>]</span>. The first is transductive transfer learning, where you have the same tasks, but only have labels in the source (pretraining) dataset. For example, imagine training a model to predict the space group of theoretical inorganic crystal structures. Transductive transfer learning could be using this model to predict the space group of self-assembled biochemical structures. You’re using a different dataset, where the only labels are in the inorganic crystal data.</p>
+<p>The second type of transfer learning is called inductive transfer learning, where you want to learn a new task, and you have labels for both your source and your target dataset. For example, imagine you train a model to predict solubility of small organic molecules. You could use inductive transfer learning and use this model to predict the pKa of another organic molecule (labeled) dataset. Notice that in both cases, the input type is the same for the source and the target problem. Also, this shouldn’t be too difficult for the model, since you would imagine there would be some relationship between the solubility and the pKa of organic molecules.</p>
+</section>
+<section id="fine-tuning">
+<h3>Fine Tuning<a class="headerlink" href="#fine-tuning" title="Permalink to this headline">¶</a></h3>
+<p>Fine-tuning is a bit different in that instead of freezing the layers and parameters, you retrain either the entire model or parts of the model. So instead of freezing the pre-trained parameters, you use them as a starting point. This can be especially helpful for low-data regimes. However, it is easy to quickly overfit when fine-tuning a pretrained model, especially on a relatively small dataset, so it is important to tune your hyperparameters, such as the learning rate.</p>
+<p>For example, SMILES-BERT <span id="id8">[<a class="reference internal" href="#id230" title="Sheng Wang, Yuzhi Guo, Yuhong Wang, Hongmao Sun, and Junzhou Huang. Smiles-bert: large scale unsupervised pre-training for molecular property prediction. In Proceedings of the 10th ACM international conference on bioinformatics, computational biology and health informatics, 429–436. 2019.">WGW+19</a>]</span> is a model pre-trained on SMILES strings via a recovery task. The unlabeled data is SMILES strings, with randomly masked or corrupted tokens. The model is trained to correctly recover the original SMILES string. By learning this task, the model learns to identify important components of the input, which can be applied via fine-tuning to a molecular property prediction downstream task. In this case, the original dataset is unlabeled, and the labels are generated automatically from the data, which is SMILES strings. Then, the target task dataset is SMILES strings with a molecular property label.</p>
+<p>For more information on the comparison between transfer learning and fine-tuning, you can check out <a class="reference external" href="https://www.youtube.com/watch?v=3nbin3bT8ec&amp;t=199s">this youtube video</a>. Also, the figure below gives a layout of fine-tuning and transfer learning. What is important to note is that in transfer learning, we retrain the last layer or add layers on the end, whereas in fine-tuning we can retrain the feature extraction layers also.</p>
+<figure class="align-default" id="tlft">
+<img alt="../_images/TL_FT.gif" src="../_images/TL_FT.gif" />
+<figcaption>
+<p><span class="caption-text">Comparison of fine-tuning and transfer learning with a general model architecture. Starting with the top middle block (original model), follow the flow chart for different situations.</span><a class="headerlink" href="#tlft" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="pretraining-for-graph-models">
+<h2>Pretraining for graph models<a class="headerlink" href="#pretraining-for-graph-models" title="Permalink to this headline">¶</a></h2>
+<p>GNNs typically require a large amount of labeled data and are not typically generalizable. Particularly in chemistry, there is a significant amount of unlabeled graph data available. Because of this, SSL has become very popular in GNNs, and it can be broadly split into two categories based on the method: contrastive learning and predictive learning. Predictive models are trained to generate labels based on the input, whereas contrastive models learn to generate diverse and informative information about the input and perform contrastive learning (compare representations) <span id="id9">[<a class="reference internal" href="#id222" title="Zaixi Zhang, Qi Liu, Hao Wang, Chengqiang Lu, and Chee-Kong Lee. Motif-based graph self-supervised learning for molecular property prediction. Advances in Neural Information Processing Systems, 34:15870–15882, 2021.">ZLW+21</a>]</span>. You can see a comparison of the two methods and example architectures in the figure below <span id="id10">[<a class="reference internal" href="#id227" title="Yaochen Xie, Zhao Xu, Jingtun Zhang, Zhengyang Wang, and Shuiwang Ji. Self-supervised learning of graph neural networks: a unified review. IEEE Transactions on Pattern Analysis and Machine Intelligence, 2022.">XXZ+22</a>]</span>.</p>
+<p>Contrastive learning is focused on learning to maximize the agreement of features among differently augmented views of the data <span id="id11">[<a class="reference internal" href="#id223" title="Yuning You, Tianlong Chen, Yongduo Sui, Ting Chen, Zhangyang Wang, and Yang Shen. Graph contrastive learning with augmentations. Advances in Neural Information Processing Systems, 33:5812–5823, 2020.">YCS+20</a>]</span>. The goal of a contrastive learning approach is for the model to learn representations invariant to the perturbations or augmentations by maximizing the agreement between the base graph and its augmented versions. In other words, if two graphs are similar, the representation should be similar. Likewise, if two graphs are dissimilar, the model learns that the representations should be dissimilar. There have been many approaches to this, including subgraph or motif-based learning, where the model learns to break apart frequent subgraph patterns, such as functional groups <span id="id12">[<a class="reference internal" href="#id222" title="Zaixi Zhang, Qi Liu, Hao Wang, Chengqiang Lu, and Chee-Kong Lee. Motif-based graph self-supervised learning for molecular property prediction. Advances in Neural Information Processing Systems, 34:15870–15882, 2021.">ZLW+21</a>]</span>. Another approach by <span id="id13">[<a class="reference internal" href="#id223" title="Yuning You, Tianlong Chen, Yongduo Sui, Ting Chen, Zhangyang Wang, and Yang Shen. Graph contrastive learning with augmentations. Advances in Neural Information Processing Systems, 33:5812–5823, 2020.">YCS+20</a>]</span> combined 4 different data augmentation techniques, similar to how masking is done for large language models, though <span id="id14">[<a class="reference internal" href="#id224" title="Mengying Sun, Jing Xing, Huijun Wang, Bin Chen, and Jiayu Zhou. Mocl: data-driven molecular fingerprint via knowledge-aware contrastive learning from molecular graph. In Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery &amp; Data Mining, 3585–3594. 2021.">SXW+21</a>]</span> found that those random augmentations often changed the global properties of the molecular graph, proposing instead to augment by replacing substructures with bioisosteres.</p>
+<p>Another way to think about contrastive learning is that the model looks at one or more encoders and learns that similar graphs should output similar representations, while less similar graphs should have less agreeable representations. Contrastive learning frameworks construct multiple views of each input graph, then an encoder outputs a representation for each view <span id="id15">[<a class="reference internal" href="#id227" title="Yaochen Xie, Zhao Xu, Jingtun Zhang, Zhengyang Wang, and Shuiwang Ji. Self-supervised learning of graph neural networks: a unified review. IEEE Transactions on Pattern Analysis and Machine Intelligence, 2022.">XXZ+22</a>]</span>. During training, the encoder is trained so that the agreement between representations of the same graph is maximized. In this case, representations from the same instance (same graph) should agree, while representations from separate instances should disagree. The agreement is often measured with Mutual Information, which is a measure of shared information across representations. A thorough discussion of agreement metrics is given in <span id="id16">[<a class="reference internal" href="#id227" title="Yaochen Xie, Zhao Xu, Jingtun Zhang, Zhengyang Wang, and Shuiwang Ji. Self-supervised learning of graph neural networks: a unified review. IEEE Transactions on Pattern Analysis and Machine Intelligence, 2022.">XXZ+22</a>]</span>.</p>
+<p>Predictive models, in contrast, train with self-generated labels. This category of model is sometimes called generative models, as graph reconstruction is a popular approach. In graph reconstruction, the graph is distorted in some way (node removed, edge removed, node replaced with another type, etc.), and the model learns to reconstruct the original graph as its output. However, it is not correct to think of predictive models as simply generative models, because graph reconstruction, with an encoder and decoder, is not the only type of predictive model for graphs. Another popular example is property prediction. In property prediction examples, remember that we are still training on unlabeled data, so the property needs to be something implicit in the data, such as the connectivity of two nodes {cite} <code class="docutils literal notranslate"><span class="pre">xie2022self</span></code>. There won’t be a decoder in this case, because we don’t want a graph as the output.</p>
+<figure class="align-default" id="ptgnn">
+<img alt="../_images/ssl_graphs.png" src="../_images/ssl_graphs.png" />
+<figcaption>
+<p><span class="caption-text">Comparison of contrastive and predictive models in the context of self-supervised learning for GNNs. On the left, contrastive models require data pairs and descriminate between positive and negative examples, and an example architecture is provided. On the right, predictive models have data(self)-generated labels and predict outputs based on input properties. An example architecture is provided.</span><a class="headerlink" href="#ptgnn" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="running-this-notebook">
+<h2>Running This Notebook<a class="headerlink" href="#running-this-notebook" title="Permalink to this headline">¶</a></h2>
+<p>Click the  <i aria-label="Launch interactive content" class="fas fa-rocket"></i>  above to launch this page as an interactive Google Colab. See details below on installing packages.</p>
+<div class="dropdown admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To install packages, execute this code in a new cell.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!pip install dmol-book
+</pre></div>
+</div>
+<p>If you find install problems, you can get the latest working versions of packages used in <a class="reference external" href="https://github.com/whitead/dmol-book/blob/master/package/setup.py">this book here</a></p>
+</div>
+<p>Let’s look at a simple example of using a pre-trained model to do transfer learning. We will load a pre-trained model from the huggingface library and use it to predict aqueous solubility of molecules. <a class="reference external" href="https://huggingface.co/">HuggingFace</a> is an open source platform that enables users to build, train and deploy their deep learning models. We load the ChemBERTa model which was originally trained on SMILES strings from the ZINC-250k dataset. Using the learned representations from ChemBERTa, we can predict aqueous solubility on a smaller dataset.<span id="id17">[<a class="reference internal" href="../ml/regression.html#id26" title="Murat Cihan Sorkun, Abhishek Khetan, and Süleyman Er. AqSolDB, a curated reference set of aqueous solubility and 2D descriptors for a diverse set of compounds. Sci. Data, 6(1):143, 2019. doi:10.1038/s41597-019-0151-1.">SKE19</a>]</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpletransformers.classification</span> <span class="kn">import</span> <span class="n">ClassificationModel</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span><span class="o">,</span> <span class="nn">sklearn</span><span class="o">,</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We begin by creating our train and test datasets. The BBB dataset that we use is slightly imbalanced, so we use stratification to make sure both classes are present in train and test sets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">soldata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">&quot;https://github.com/whitead/dmol-book/raw/master/data/curated-solubility-dataset.csv&quot;</span>
+<span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">soldata</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">soldata</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">sample</span><span class="p">[:</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span> <span class="o">*</span> <span class="n">N</span><span class="p">)]</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">sample</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span> <span class="o">*</span> <span class="n">N</span><span class="p">)</span> <span class="p">:]</span>
+
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train</span><span class="p">[[</span><span class="s2">&quot;SMILES&quot;</span><span class="p">,</span> <span class="s2">&quot;Solubility&quot;</span><span class="p">]]</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Solubility&quot;</span><span class="p">:</span> <span class="s2">&quot;labels&quot;</span><span class="p">,</span> <span class="s2">&quot;SMILES&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">})</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">test</span><span class="p">[[</span><span class="s2">&quot;SMILES&quot;</span><span class="p">,</span> <span class="s2">&quot;Solubility&quot;</span><span class="p">]]</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Solubility&quot;</span><span class="p">:</span> <span class="s2">&quot;labels&quot;</span><span class="p">,</span> <span class="s2">&quot;SMILES&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we initialize a classification model for <code class="docutils literal notranslate"><span class="pre">ChemBERTa_zinc250k_v2_40k</span></code> pre-trained model. <code class="docutils literal notranslate"><span class="pre">ClassificationModel</span></code> is a binary classification model by default, so we specify that we want to do regression. This will basically change the layer layer of the original model to output regressed values rather than classification probabilities. Then we train the model using the solubility dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">ClassificationModel</span><span class="p">(</span>
+    <span class="s2">&quot;roberta&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;seyonec/ChemBERTa_zinc250k_v2_40k&quot;</span><span class="p">,</span>
+    <span class="n">num_labels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;num_train_epochs&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;regression&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+    <span class="n">use_cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span>
+    <span class="n">train_df</span><span class="o">=</span><span class="n">train_dataset</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;/content/chemberta_soldata&quot;</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;num_train_epochs&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we evaluate the trained model on our test set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="p">,</span> <span class="n">model_outputs</span><span class="p">,</span> <span class="n">wrong_predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">eval_model</span><span class="p">(</span>
+    <span class="n">test_dataset</span><span class="p">,</span> <span class="n">acc</span><span class="o">=</span><span class="n">sklearn</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make predictions and see how we do</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># plot the predictions</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C0&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">],</span> <span class="n">test_dataset</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="o">-</span><span class="mi">10</span><span class="p">,</span>
+    <span class="mf">0.0</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Correlation coefficient: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">],</span> <span class="n">predictions</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Actual Solubility&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Predicted Solubility&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The model performs quite well on our test set. We have finetuned the pretrained model for a task that it was not trained for. This shows that even though the original model was trained on the ZINC dataset, the input representations can be used to make predictions on another dataset, with a different task. Using pre-trained models saves time and effort spent in training the model. To further improve performance on this silubility prediction task, you can change some other parameters like the learning rate or add additional layers before the output layer.</p>
+</section>
+<section id="cited-references">
+<h2>Cited References<a class="headerlink" href="#cited-references" title="Permalink to this headline">¶</a></h2>
+<div class="docutils container" id="id18">
+<dl class="citation">
+<dt class="label" id="id35"><span class="brackets"><a class="fn-backref" href="#id17">SKE19</a></span></dt>
+<dd><p>Murat Cihan Sorkun, Abhishek Khetan, and Süleyman Er. AqSolDB, a curated reference set of aqueous solubility and 2D descriptors for a diverse set of compounds. <em>Sci. Data</em>, 6(1):143, 2019. <a class="reference external" href="https://doi.org/10.1038/s41597-019-0151-1">doi:10.1038/s41597-019-0151-1</a>.</p>
+</dd>
+<dt class="label" id="id228"><span class="brackets">Mao20</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id3">2</a>,<a href="#id6">3</a>,<a href="#id7">4</a>)</span></dt>
+<dd><p>Huanru Henry Mao. A survey on self-supervised pre-training for sequential transfer learning in neural networks. <em>arXiv preprint arXiv:2007.00800</em>, 2020.</p>
+</dd>
+<dt class="label" id="id226"><span class="brackets">ECBV10</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id3">2</a>)</span></dt>
+<dd><p>Dumitru Erhan, Aaron Courville, Yoshua Bengio, and Pascal Vincent. Why does unsupervised pre-training help deep learning? In <em>Proceedings of the thirteenth international conference on artificial intelligence and statistics</em>, 201–208. JMLR Workshop and Conference Proceedings, 2010.</p>
+</dd>
+<dt class="label" id="id223"><span class="brackets">YCS+20</span><span class="fn-backref">(<a href="#id4">1</a>,<a href="#id5">2</a>,<a href="#id11">3</a>,<a href="#id13">4</a>)</span></dt>
+<dd><p>Yuning You, Tianlong Chen, Yongduo Sui, Ting Chen, Zhangyang Wang, and Yang Shen. Graph contrastive learning with augmentations. <em>Advances in Neural Information Processing Systems</em>, 33:5812–5823, 2020.</p>
+</dd>
+<dt class="label" id="id230"><span class="brackets"><a class="fn-backref" href="#id8">WGW+19</a></span></dt>
+<dd><p>Sheng Wang, Yuzhi Guo, Yuhong Wang, Hongmao Sun, and Junzhou Huang. Smiles-bert: large scale unsupervised pre-training for molecular property prediction. In <em>Proceedings of the 10th ACM international conference on bioinformatics, computational biology and health informatics</em>, 429–436. 2019.</p>
+</dd>
+<dt class="label" id="id222"><span class="brackets">ZLW+21</span><span class="fn-backref">(<a href="#id9">1</a>,<a href="#id12">2</a>)</span></dt>
+<dd><p>Zaixi Zhang, Qi Liu, Hao Wang, Chengqiang Lu, and Chee-Kong Lee. Motif-based graph self-supervised learning for molecular property prediction. <em>Advances in Neural Information Processing Systems</em>, 34:15870–15882, 2021.</p>
+</dd>
+<dt class="label" id="id227"><span class="brackets">XXZ+22</span><span class="fn-backref">(<a href="#id10">1</a>,<a href="#id15">2</a>,<a href="#id16">3</a>)</span></dt>
+<dd><p>Yaochen Xie, Zhao Xu, Jingtun Zhang, Zhengyang Wang, and Shuiwang Ji. Self-supervised learning of graph neural networks: a unified review. <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>, 2022.</p>
+</dd>
+<dt class="label" id="id224"><span class="brackets"><a class="fn-backref" href="#id14">SXW+21</a></span></dt>
+<dd><p>Mengying Sun, Jing Xing, Huijun Wang, Bin Chen, and Jiayu Zhou. Mocl: data-driven molecular fingerprint via knowledge-aware contrastive learning from molecular graph. In <em>Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery &amp; Data Mining</em>, 3585–3594. 2021.</p>
+</dd>
+</dl>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./dl"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Andrew D. White<br/>
+    
+        &copy; Copyright 2022.<br/>
+      <div class="extra_footer">
+        <a href="http://thewhitelab.org">thewhitelab.org</a> <div id="wh-modal"> <button class="wh-venti-button" aria-label="close modal" id="wh-modal-close">✕</button> <img id="wh-modal-img"> </div>
+      </div>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
